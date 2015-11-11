@@ -28,10 +28,6 @@ public class GameData {
     static final String CAMERA_WIDTH = "cameraWidth";
     static final String CAMERA_HEIGHT = "cameraHeight";
     static final String IS_CAMERA_SIZE_INIT = "isCameraSizeInit";
-//    static final String LAST_OPENED_PLUS = "lastOpenedPlus";
-//    static final String LAST_OPENED_MINUS = "lastOpenedMinus";
-//    static final String LAST_OPENED_MULTIPLY = "lastOpenedMultiply";
-//    static final String LAST_OPENED_DIVIDE = "lastOpenedDivide";
     static final String FONT_100 = "font100";
     static final String FONT_150 = "font150";
 
@@ -79,21 +75,6 @@ public class GameData {
 
     public static Color getInactiveColor() {
         return (Color) map.get(INACTIVE_COLOR);
-    }
-
-    static int getTextLength1(Font font, String text) {
-        int length = 0;
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-
-            length += font.getLetter(c).mWidth;
-
-            if (c == ' ') {
-                length += 50;
-            }
-        }
-
-        return length;
     }
 
     public static int getTextLength(Font font, String text) {
@@ -158,10 +139,6 @@ public class GameData {
 
     public static void putExtra(String key, String value) {
         extra.put(key, value);
-    }
-
-    public static Map<String, String> getExtra() {
-        return extra;
     }
 
     public static String getExtra(String key) {
