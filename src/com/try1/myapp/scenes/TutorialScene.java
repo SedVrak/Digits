@@ -2,9 +2,11 @@ package com.try1.myapp.scenes;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.try1.myapp.GameData;
 import com.try1.myapp.GameType;
 import com.try1.myapp.MainMenuActivity;
+
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.AutoWrap;
@@ -22,9 +24,6 @@ import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import static com.try1.myapp.MainMenuActivity.CAMERA_HEIGHT;
-import static com.try1.myapp.MainMenuActivity.CAMERA_WIDTH;
 
 /**
  * Created by SeniorJD.
@@ -58,10 +57,7 @@ public class TutorialScene extends GameScene {
         startGame();
     }
 
-    @Override
     protected void loadTexture() {
-        super.loadTexture();
-
         try {
             arrowTexture = new BitmapTexture(mainMenuActivity.getTextureManager(), new IInputStreamOpener() {
                 //@Override
@@ -238,7 +234,7 @@ public class TutorialScene extends GameScene {
         timer.setAutoReset(false);
 
         shownTipSprite = arrowSprites[3];
-        shownTipSprite.setPosition(deleteButton.getX() - shownTipSprite.getWidth() / 5, deleteButton.getY() - shownTipSprite.getHeight());
+        shownTipSprite.setPosition(buttons[buttons.length - 1].getX() - shownTipSprite.getWidth() / 5, buttons[buttons.length - 1].getY() - shownTipSprite.getHeight());
 
         shownTipRect = new Rectangle(
                 10,
@@ -303,20 +299,6 @@ public class TutorialScene extends GameScene {
 
         attachChild(shownTipRect);
         attachChild(shownTipSprite);
-    }
-
-    @Override
-    protected void setText(Text text, Rectangle rectangle, String s, float px, float py) {
-        int length = GameData.getTextLength(GameData.getFont100(), s);
-
-        float x = CAMERA_WIDTH/2 - length/2 - s.length();
-        float y = CAMERA_HEIGHT/12 - GameData.getFont100().getLineHeight()/2;
-
-        text.setPosition(x, y);
-        text.setText(s);
-
-        rectangle.setPosition(px, py);
-        rectangle.setSize(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 6);
     }
 
     @Override

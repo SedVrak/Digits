@@ -3,6 +3,8 @@ package com.try1.myapp;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.KeyEvent;
+
+import com.try1.myapp.scenes.GameScene;
 import com.try1.myapp.scenes.IScene;
 import com.try1.myapp.scenes.MainMenuScene;
 import org.andengine.engine.camera.Camera;
@@ -111,6 +113,17 @@ public class MainMenuActivity extends SimpleBaseGameActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    protected synchronized void onResume() {
+        super.onResume();
+
+        if (getEngine().getScene() instanceof GameScene) {
+            GameScene gameScene = (GameScene) getEngine().getScene();
+
+            gameScene.onPause();
+        }
     }
 
     public void setNewScene(Scene scene) {

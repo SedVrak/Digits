@@ -3,6 +3,7 @@ package com.try1.myapp.scenes;
 import android.content.Context;
 import android.os.Vibrator;
 import android.view.KeyEvent;
+
 import com.try1.myapp.GameData;
 import com.try1.myapp.GameType;
 import com.try1.myapp.KeyboardAction;
@@ -17,22 +18,13 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.texture.ITexture;
-import org.andengine.opengl.texture.bitmap.BitmapTexture;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.util.HorizontalAlign;
-import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.color.Color;
-import org.andengine.util.debug.Debug;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +39,6 @@ public class GameScene extends Scene implements IScene {
     private static final Color YELLOW = new Color(0.99f, 0.99f, 0.76f);
     private static final Color RED = new Color(0.99f, 0.77f, 0.77f);
 
-    private static final String COMMA = ",";
     private static final String MINUS = "-";
 
     private static final int MAX_ENTER = 10;
@@ -65,10 +56,6 @@ public class GameScene extends Scene implements IScene {
     private Rectangle enterRect;
     private Text enterField;
 
-    private ITexture deleteButtonTexture;
-    private ITextureRegion[] deleteButtonTextureRegions = new ITextureRegion[2];
-    protected ButtonSprite deleteButton;
-
     protected TimerHandler timer;
     private int timerValue;
     protected Text timerText;
@@ -84,16 +71,6 @@ public class GameScene extends Scene implements IScene {
     protected Text pressToStartText;
 
     private Rectangle pauseR;
-    private Text pauseText;
-
-    private Rectangle pauseResumeR;
-    private Text pauseResumeText;
-
-    private Rectangle pauseRestartR;
-    private Text pauseRestartText;
-
-    private Rectangle pauseMenuR;
-    private Text pauseMenuText;
 
     private LevelGenerator levelGenerator;
 
@@ -115,7 +92,6 @@ public class GameScene extends Scene implements IScene {
     }
 
     protected void init() {
-        loadTexture();
         loadBundle();
 
         build();
@@ -138,36 +114,8 @@ public class GameScene extends Scene implements IScene {
         enterField = createEnterField();
         attachChild(enterField);
 
-        deleteButton = new ButtonSprite(CAMERA_WIDTH - 140, enterY, deleteButtonTextureRegions[0], deleteButtonTextureRegions[1], null);
-        deleteButton.setSize(140, 140);
-        attachChild(deleteButton);
-        registerTouchArea(deleteButton);
-
-        deleteButton.setOnClickListener(new ButtonSprite.OnClickListener() {
-            @Override
-            public void onClick(ButtonSprite button, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                if (button != deleteButton) {
-                    return;
-                }
-
-                String text = enterField.getText().toString();
-
-                if (text.length() == 0) {
-                    return;
-                }
-
-                text = text.substring(0, text.length() - 1);
-
-                setEnterValue(text);
-
-
-            }
-        });
-
-        // �������� ��������� ����� ������
         float color = 0.9412f;
         setBackground(new Background(color, color, color));
-        // ������� ������ � ������ ��� � �����
 
         pressToStartR = new Rectangle(0, enterY + 140, CAMERA_WIDTH, CAMERA_HEIGHT - 240 * 4 - enterY - 140, mainMenuActivity.getVertexBufferObjectManager());
         pressToStartR.setColor(new Color(0.9f, 0.9f, 0.9f));
@@ -352,39 +300,9 @@ public class GameScene extends Scene implements IScene {
     }
 
     private void createPauseMenu() {
-        pauseR = new Rectangle(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT, mainMenuActivity.getVertexBufferObjectManager());
-        pauseR.setColor(GameData.getColor());
-        String pauseString = "Pause";
-        pauseText = new Text(CAMERA_WIDTH/2 - GameData.getTextLength(GameData.getFont100(), pauseString)/2, CAMERA_HEIGHT * 1 / 6 - GameData.getFont100().getLineHeight()/2, GameData.getFont100(), pauseString, mainMenuActivity.getVertexBufferObjectManager());
-
-        pauseR.attachChild(pauseText);
+        pauseR = new PauseRectangle(this);
         attachChild(pauseR);
 
-        pauseResumeR = new Rectangle(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT / 6, mainMenuActivity.getVertexBufferObjectManager());
-        pauseResumeR.setColor(GameData.getColor());
-        pauseResumeText = new Text(0, 0, GameData.getFont100(), "Resume", mainMenuActivity.getVertexBufferObjectManager());
-        pauseResumeR.attachChild(pauseResumeText);
-
-        pauseRestartR = new Rectangle(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT / 6, mainMenuActivity.getVertexBufferObjectManager());
-        pauseRestartR.setColor(GameData.getColor());
-        pauseRestartText = new Text(0, 0, GameData.getFont100(), "Restart", mainMenuActivity.getVertexBufferObjectManager());
-        pauseRestartR.attachChild(pauseRestartText);
-
-        pauseMenuR = new Rectangle(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT / 6, mainMenuActivity.getVertexBufferObjectManager());
-        pauseMenuR.setColor(GameData.getColor());
-        pauseMenuText = new Text(0, 0, GameData.getFont100(), "Menu", mainMenuActivity.getVertexBufferObjectManager());
-        pauseMenuR.attachChild(pauseMenuText);
-
-        int i = 2;
-        setText(pauseResumeText, pauseResumeR, pauseResumeText.getText().toString(), 0, CAMERA_HEIGHT * i / 6);
-        i++;
-        setText(pauseRestartText, pauseRestartR, pauseRestartText.getText().toString(), 0, CAMERA_HEIGHT * i / 6);
-        i++;
-        setText(pauseMenuText, pauseMenuR, pauseMenuText.getText().toString(), 0, CAMERA_HEIGHT * i / 6);
-
-        pauseR.attachChild(pauseResumeR);
-        pauseR.attachChild(pauseRestartR);
-        pauseR.attachChild(pauseMenuR);
         pauseR.setVisible(false);
     }
 
@@ -408,19 +326,6 @@ public class GameScene extends Scene implements IScene {
 
         enterRect.setColor(YELLOW);
         setEnterValue("");
-    }
-
-    protected void setText(Text text, Rectangle rectangle, String s, float px, float py) {
-        int length = GameData.getTextLength(GameData.getFont100(), s);
-
-        float x = CAMERA_WIDTH/2 - length/2 - s.length();
-        float y = CAMERA_HEIGHT/12 - GameData.getFont100().getLineHeight()/2;
-
-        text.setPosition(x, y);
-        text.setText(s);
-
-        rectangle.setPosition(px, py);
-        rectangle.setSize(CAMERA_WIDTH, CAMERA_HEIGHT / 6);
     }
 
     private KeyboardAction getAction(int index) {
@@ -461,7 +366,7 @@ public class GameScene extends Scene implements IScene {
                 action = KeyboardAction.KEY_PM;
                 break;
             case 10:
-                action = KeyboardAction.KEY_COMMA;
+                action = KeyboardAction.KEY_C;
                 break;
 
             default:
@@ -535,15 +440,13 @@ public class GameScene extends Scene implements IScene {
 
                 setEnterValue(text);
                 return;
-            case KEY_COMMA:
+            case KEY_C:
                 text = getEnterValue();
 
-
-                if (!text.contains(COMMA)) {
-                    text = text + COMMA;
+                if (text.length() != 0) {
+                    text = text.substring(0, text.length() - 1);
+                    setEnterValue(text);
                 }
-
-                setEnterValue(text);
 
                 return;
         }
@@ -587,25 +490,6 @@ public class GameScene extends Scene implements IScene {
         return r;
     }
 
-    protected void loadTexture() {
-        try {
-
-            deleteButtonTexture = new BitmapTexture(mainMenuActivity.getTextureManager(), new IInputStreamOpener() {
-                //@Override
-                public InputStream open() throws IOException {
-                    return mainMenuActivity.getAssets().open("gfx/delete.png");
-                }
-            });
-
-            deleteButtonTexture.load();
-            deleteButtonTextureRegions[0] = TextureRegionFactory.extractFromTexture(deleteButtonTexture, 0, 0, 140, 140);
-            deleteButtonTextureRegions[1] = TextureRegionFactory.extractFromTexture(deleteButtonTexture, 140, 0, 140, 140);
-        }
-        catch (IOException e) {
-            Debug.e(e);
-        }
-    }
-
     protected void loadBundle() {
 
         gameType = GameType.valueOf(GameData.getExtra(GameData.GAME_TYPE_STRING));
@@ -623,64 +507,9 @@ public class GameScene extends Scene implements IScene {
     @Override
     public boolean onSceneTouchEvent(TouchEvent event) {
         if (pauseR.isVisible()) {
-            if (event.getAction() == TouchEvent.ACTION_UP) {
-                if (pauseResumeR.contains(event.getX(), event.getY())) {
-                    pauseR.setVisible(false);
-                    timer.setAutoReset(true);
-                    generateNewTask();
-                    timer.reset();
+            pauseR.onAreaTouched(event, event.getX(), event.getY());
 
-                    pauseResumeR.setColor(GameData.getColor());
-                    return false;
-                } else if (pauseRestartR.contains(event.getX(), event.getY())) {
-                    pauseRestartR.setColor(GameData.getColor());
-                    // restart
-                    GameData.clearExtra();
-
-                    if (GameType.LEVELS.equals(gameType)) {
-                        GameData.putExtra(GameData.GAME_TYPE_STRING, gameType.toString());
-                        GameData.putExtra(GameData.LEVEL_TYPE_STRING, levelType.toString());
-                        GameData.putExtra(GameData.LEVEL_NUMBER_STRING, String.valueOf(levelIndex));
-
-                        mainMenuActivity.setNewScene(new GameScene(mainMenuActivity));
-                    } else {
-                        GameData.putExtra(GameData.GAME_TYPE_STRING, gameType.toString());
-                        mainMenuActivity.setNewScene(new GameScene(mainMenuActivity));
-                    }
-                } else if (pauseMenuR.contains(event.getX(), event.getY())) {
-                    pauseMenuR.setColor(GameData.getColor());
-
-                    GameData.clearExtra();
-                    mainMenuActivity.setNewScene(new MainMenuScene(mainMenuActivity));
-                } else {
-                    pauseR.setVisible(false);
-                    timer.setAutoReset(true);
-                    generateNewTask();
-                    timer.reset();
-
-                }
-
-            } else if (event.getAction() == TouchEvent.ACTION_DOWN || event.getAction() == TouchEvent.ACTION_MOVE) {
-                if (pauseResumeR.contains(event.getX(), event.getY())) {
-                    pauseResumeR.setColor(GameData.getSelectionColor());
-                    pauseRestartR.setColor(GameData.getColor());
-                    pauseMenuR.setColor(GameData.getColor());
-                } else if (pauseRestartR.contains(event.getX(), event.getY())) {
-                    pauseResumeR.setColor(GameData.getColor());
-                    pauseRestartR.setColor(GameData.getSelectionColor());
-                    pauseMenuR.setColor(GameData.getColor());
-                } else if (pauseMenuR.contains(event.getX(), event.getY())) {
-                    pauseResumeR.setColor(GameData.getColor());
-                    pauseRestartR.setColor(GameData.getColor());
-                    pauseMenuR.setColor(GameData.getSelectionColor());
-                } else {
-                    pauseResumeR.setColor(GameData.getColor());
-                    pauseRestartR.setColor(GameData.getColor());
-                    pauseMenuR.setColor(GameData.getColor());
-                }
-            }
-
-            return false;
+            return super.onSceneTouchEvent(event);
         }
 
         if (event.isActionDown()) {
@@ -704,14 +533,6 @@ public class GameScene extends Scene implements IScene {
             if (ignoreKeyboard) {
                 return false;
             }
-
-            float x = event.getX();
-            float y = event.getY();
-
-            boolean contains = deleteButton.contains(x, y);
-            TouchEvent newEvent = TouchEvent.obtain(x, y, contains ? TouchEvent.ACTION_DOWN : TouchEvent.ACTION_UP, -1, null);
-            deleteButton.onAreaTouched(newEvent, x, y);
-
         } else if (event.getAction() == TouchEvent.ACTION_UP) {
             if (timer == null && pressToStartR.contains(event.getX(), event.getY())) {
                 startTimer();
@@ -912,16 +733,73 @@ public class GameScene extends Scene implements IScene {
             }
 
             if (pauseR.isVisible()) {
-                pauseR.setVisible(false);
-                timer.setAutoReset(true);
-                generateNewTask();
-                timer.reset();
+                resume(PauseRectangle.RESUME);
             } else {
-                pauseR.setVisible(true);
-                timer.setAutoReset(false);
+                onPause();
             }
 
         }
         return false;
+    }
+
+    void resume(int code) {
+        switch (code) {
+            case PauseRectangle.RESUME:
+                resume();
+                break;
+            case PauseRectangle.RESTART:
+                restart();
+                break;
+            case PauseRectangle.MENU:
+                toMenu();
+                break;
+        }
+    }
+
+    private void resume() {
+        pauseR.setVisible(false);
+        registerMainControls();
+
+        timer.setAutoReset(true);
+        generateNewTask();
+        timer.reset();
+    }
+
+    private void restart() {
+        GameData.clearExtra();
+
+        if (GameType.LEVELS.equals(gameType)) {
+            GameData.putExtra(GameData.GAME_TYPE_STRING, gameType.toString());
+            GameData.putExtra(GameData.LEVEL_TYPE_STRING, levelType.toString());
+            GameData.putExtra(GameData.LEVEL_NUMBER_STRING, String.valueOf(levelIndex));
+
+            mainMenuActivity.setNewScene(new GameScene(mainMenuActivity));
+        } else {
+            GameData.putExtra(GameData.GAME_TYPE_STRING, gameType.toString());
+            mainMenuActivity.setNewScene(new GameScene(mainMenuActivity));
+        }
+    }
+
+    private void toMenu() {
+        GameData.clearExtra();
+        mainMenuActivity.setNewScene(new MainMenuScene(mainMenuActivity));
+    }
+
+    public void onPause() {
+        unregisterMainControls();
+        pauseR.setVisible(true);
+        timer.setAutoReset(false);
+    }
+
+    private void registerMainControls() {
+        for (TextButton button : buttons) {
+            registerTouchArea(button);
+        }
+    }
+
+    private void unregisterMainControls() {
+        for (TextButton button : buttons) {
+            unregisterTouchArea(button);
+        }
     }
 }

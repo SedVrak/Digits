@@ -15,7 +15,7 @@ public enum KeyboardAction {
     KEY_9 ("9"),
     KEY_0 ("0"),
     KEY_PM ("\u2213"),
-    KEY_COMMA (",");
+    KEY_C("C");
 
     private String textValue;
 
