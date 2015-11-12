@@ -30,6 +30,8 @@ public class GameData {
     static final String IS_CAMERA_SIZE_INIT = "isCameraSizeInit";
     static final String FONT_100 = "font100";
     static final String FONT_150 = "font150";
+    static final String FONT_100_GREEN = "font100green";
+    static final String FONT_100_RED = "font100red";
 
 
     private static Map<String, Object> map = new HashMap<>();
@@ -122,6 +124,22 @@ public class GameData {
 
     public static void setFont100(Font font100) {
         map.put(FONT_100, font100);
+    }
+
+    public static Font getFont100Green() {
+        return (Font) map.get(FONT_100_GREEN);
+    }
+
+    public static void setFont100Green(Font font100green) {
+        map.put(FONT_100_GREEN, font100green);
+    }
+
+    public static Font getFont100Red() {
+        return (Font) map.get(FONT_100_RED);
+    }
+
+    public static void setFont100Red(Font font100red) {
+        map.put(FONT_100_RED, font100red);
     }
 
     public static Font getFont150() {

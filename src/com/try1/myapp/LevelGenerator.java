@@ -57,7 +57,7 @@ public abstract class LevelGenerator {
 //                return getLevelsDivideGenerator(levelIndex);
         }
 
-        return null;
+        throw new IllegalStateException("Unknown type: " + levelType);
     }
 
     static LevelGenerator getLevelsPlusGenerator(int levelIndex) {
@@ -169,13 +169,6 @@ public abstract class LevelGenerator {
         return null;
     }
 
-    static LevelGenerator getLevelsDivideGenerator(int levelIndex) {
-        switch (levelIndex) {
-
-        }
-        return null;
-    }
-
     // GENERATOR CLASSES
     static class TimeAttackGenerator extends LevelGenerator {
 
@@ -201,8 +194,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100);
-            int i2 = r.nextInt(100);
+            int i1 = nextInt(r, 100);
+            int i2 = nextInt(r, 100);
 
             String task;
             int result;
@@ -224,8 +217,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(10);
-            int i2 = r.nextInt(10);
+            int i1 = nextInt(r, 10);
+            int i2 = nextInt(r, 10);
 
             String task;
             int result;
@@ -242,8 +235,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(10) + 10;
-            int i2 = r.nextInt(10) + 10;
+            int i1 = nextInt(r, 10) + 10;
+            int i2 = nextInt(r, 10) + 10;
 
             String task;
             int result;
@@ -260,8 +253,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(20) + 10;
-            int i2 = r.nextInt(9) + 1;
+            int i1 = nextInt(r, 20) + 10;
+            int i2 = nextInt(r, 20) + 10;
 
             String task;
             int result;
@@ -278,8 +271,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(50) + 10;
-            int i2 = r.nextInt(20) + 10;
+            int i1 = nextInt(r, 30) + 30;
+            int i2 = nextInt(r, 20) + 10;
 
             String task;
             int result;
@@ -296,8 +289,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(50) + 10;
-            int i2 = r.nextInt(50) + 10;
+            int i1 = nextInt(r, 30) + 30;
+            int i2 = nextInt(r, 30) + 30;
 
             String task;
             int result;
@@ -314,8 +307,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(60) + 10;
-            int i2 = r.nextInt(70);
+            int i1 = nextInt(r, 40) + 40;
+            int i2 = nextInt(r, 40) + 40;
 
             String task;
             int result;
@@ -332,8 +325,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100);
-            int i2 = r.nextInt(100);
+            int i1 = nextInt(r, 50) + 50;
+            int i2 = nextInt(r, 50) + 50;
 
             String task;
             int result;
@@ -350,9 +343,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(20);
-            int i2 = r.nextInt(20);
-            int i3 = r.nextInt(20);
+            int i1 = nextInt(r, 20);
+            int i2 = nextInt(r, 20);
+            int i3 = nextInt(r, 20);
 
             String task;
             int result;
@@ -369,9 +362,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(40);
-            int i2 = r.nextInt(40);
-            int i3 = r.nextInt(19) + 1;
+            int i1 = nextInt(r, 20) + 20;
+            int i2 = nextInt(r, 20) + 20;
+            int i3 = nextInt(r, 20) + 20;
 
             String task;
             int result;
@@ -388,9 +381,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(60);
-            int i2 = r.nextInt(19) + 1;
-            int i3 = r.nextInt(60);
+            int i1 = nextInt(r, 30) + 30;
+            int i2 = nextInt(r, 20) + 10;
+            int i3 = nextInt(r, 30) + 30;
 
             String task;
             int result;
@@ -407,9 +400,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100);
-            int i2 = r.nextInt(19) + 1;
-            int i3 = r.nextInt(100);
+            int i1 = nextInt(r, 70) + 30;
+            int i2 = nextInt(r, 20) + 30;
+            int i3 = nextInt(r, 70) + 90;
 
             String task;
             int result;
@@ -426,9 +419,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100);
-            int i2 = r.nextInt(100);
-            int i3 = r.nextInt(100);
+            int i1 = nextInt(r, 50) + 50;
+            int i2 = nextInt(r, 50) + 20;
+            int i3 = nextInt(r, 50) + 50;
 
             String task;
             int result;
@@ -445,9 +438,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 100;
-            int i2 = r.nextInt(100);
-            int i3 = r.nextInt(100);
+            int i1 = nextInt(r, 100) + 100;
+            int i2 = nextInt(r, 50) + 20;
+            int i3 = nextInt(r, 50) + 20;
 
             String task;
             int result;
@@ -464,9 +457,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 100;
-            int i2 = r.nextInt(100) + 50;
-            int i3 = r.nextInt(100) + 50;
+            int i1 = nextInt(r, 100) + 100;
+            int i2 = nextInt(r, 50) + 50;
+            int i3 = nextInt(r, 100) + 50;
 
             String task;
             int result;
@@ -483,9 +476,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 100;
-            int i2 = r.nextInt(100) + 100;
-            int i3 = r.nextInt(100) + 100;
+            int i1 = nextInt(r, 100) + 100;
+            int i2 = nextInt(r, 100) + 100;
+            int i3 = nextInt(r, 100) + 100;
 
             String task;
             int result;
@@ -502,8 +495,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int test1 = r.nextInt(10);
-            int test2 = r.nextInt(10);
+            int test1 = nextInt(r, 10);
+            int test2 = nextInt(r, 10);
 
             int i1 = Math.max(test1, test2);
             int i2 = Math.min(test1, test2);
@@ -511,13 +504,8 @@ public abstract class LevelGenerator {
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -528,8 +516,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int test1 = r.nextInt(10) + 10;
-            int test2 = r.nextInt(10) + 10;
+            int test1 = nextInt(r, 10) + 10;
+            int test2 = nextInt(r, 10);
 
             int i1 = Math.max(test1, test2);
             int i2 = Math.min(test1, test2);
@@ -537,13 +525,8 @@ public abstract class LevelGenerator {
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -554,8 +537,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int test1 = r.nextInt(30) + 10;
-            int test2 = r.nextInt(9) + 1;
+            int test1 = nextInt(r, 20) + 10;
+            int test2 = nextInt(r, 10);
 
             int i1 = Math.max(test1, test2);
             int i2 = Math.min(test1, test2);
@@ -563,13 +546,8 @@ public abstract class LevelGenerator {
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -580,8 +558,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int test1 = r.nextInt(50) + 10;
-            int test2 = r.nextInt(19) + 1;
+            int test1 = nextInt(r, 30) + 30;
+            int test2 = nextInt(r, 20);
 
             int i1 = Math.max(test1, test2);
             int i2 = Math.min(test1, test2);
@@ -589,13 +567,8 @@ public abstract class LevelGenerator {
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -606,19 +579,14 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(50) + 10;
-            int i2 = r.nextInt(20) + 10;
+            int i1 = nextInt(r, 30) + 30;
+            int i2 = nextInt(r, 20) + 10;
 
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -629,19 +597,14 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(70) + 10;
-            int i2 = r.nextInt(20) + 10;
+            int i1 = nextInt(r, 40) + 40;
+            int i2 = nextInt(r, 20) + 10;
 
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -652,19 +615,14 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 1;
-            int i2 = r.nextInt(30) + 10;
+            int i1 = nextInt(r, 50) + 50;
+            int i2 = nextInt(r, 30) + 10;
 
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -675,19 +633,14 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 1;
-            int i2 = r.nextInt(50) + 1;
+            int i1 = nextInt(r, 50) + 50;
+            int i2 = nextInt(r, 30) + 30;
 
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -698,19 +651,14 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 1;
-            int i2 = r.nextInt(100) + 1;
+            int i1 = nextInt(r, 50) + 50;
+            int i2 = nextInt(r, 50) + 50;
 
             String task;
             int result;
 
-            if (r.nextBoolean()) {
-                result = i1 + i2;
-                task = i1 + "+" +i2;
-            } else {
-                result = i1 - i2;
-                task = i1 + "-" +i2;
-            }
+            result = i1 - i2;
+            task = i1 + "-" +i2;
 
             return new Task(task, String.valueOf(result));
         }
@@ -721,9 +669,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(20) + 1;
-            int i2 = r.nextInt(20) + 1;
-            int i3 = r.nextInt(20) + 1;
+            int i1 = nextInt(r, 20);
+            int i2 = nextInt(r, 10) + 10;
+            int i3 = nextInt(r, 20);
 
             String task;
             int result;
@@ -731,13 +679,9 @@ public abstract class LevelGenerator {
             if (r.nextBoolean()) {
                 result = i1 + i2;
                 task = i1 + "+" +i2;
-                if (r.nextBoolean()) {
-                    result = result + i3;
-                    task = task + "+" + i3;
-                } else {
-                    result = result - i3;
-                    task = task + "-" + i3;
-                }
+
+                result = result - i3;
+                task = task + "-" + i3;
             } else {
                 result = i1 - i2;
                 task = i1 + "-" +i2;
@@ -760,9 +704,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(40) + 1;
-            int i2 = r.nextInt(20) + 1;
-            int i3 = r.nextInt(40) + 1;
+            int i1 = nextInt(r, 20) + 20;
+            int i2 = nextInt(r, 20) + 10;
+            int i3 = nextInt(r, 30) + 10;
 
             String task;
             int result;
@@ -770,13 +714,9 @@ public abstract class LevelGenerator {
             if (r.nextBoolean()) {
                 result = i1 + i2;
                 task = i1 + "+" +i2;
-                if (r.nextBoolean()) {
-                    result = result + i3;
-                    task = task + "+" + i3;
-                } else {
-                    result = result - i3;
-                    task = task + "-" + i3;
-                }
+
+                result = result - i3;
+                task = task + "-" + i3;
             } else {
                 result = i1 - i2;
                 task = i1 + "-" +i2;
@@ -799,9 +739,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(60) + 1;
-            int i2 = r.nextInt(40) + 1;
-            int i3 = r.nextInt(60) + 1;
+            int i1 = nextInt(r, 20) + 40;
+            int i2 = nextInt(r, 20) + 20;
+            int i3 = nextInt(r, 50) + 10;
 
             String task;
             int result;
@@ -809,13 +749,9 @@ public abstract class LevelGenerator {
             if (r.nextBoolean()) {
                 result = i1 + i2;
                 task = i1 + "+" +i2;
-                if (r.nextBoolean()) {
-                    result = result + i3;
-                    task = task + "+" + i3;
-                } else {
-                    result = result - i3;
-                    task = task + "-" + i3;
-                }
+
+                result = result - i3;
+                task = task + "-" + i3;
             } else {
                 result = i1 - i2;
                 task = i1 + "-" +i2;
@@ -838,9 +774,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(80) + 1;
-            int i2 = r.nextInt(50) + 1;
-            int i3 = r.nextInt(80) + 1;
+            int i1 = nextInt(r, 40) + 40;
+            int i2 = nextInt(r, 30) + 20;
+            int i3 = nextInt(r, 40) + 40;
 
             String task;
             int result;
@@ -848,13 +784,9 @@ public abstract class LevelGenerator {
             if (r.nextBoolean()) {
                 result = i1 + i2;
                 task = i1 + "+" +i2;
-                if (r.nextBoolean()) {
-                    result = result + i3;
-                    task = task + "+" + i3;
-                } else {
-                    result = result - i3;
-                    task = task + "-" + i3;
-                }
+
+                result = result - i3;
+                task = task + "-" + i3;
             } else {
                 result = i1 - i2;
                 task = i1 + "-" +i2;
@@ -877,9 +809,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 50;
-            int i2 = r.nextInt(75) + 1;
-            int i3 = r.nextInt(100) + 1;
+            int i1 = nextInt(r, 50) + 50;
+            int i2 = nextInt(r, 30) + 30;
+            int i3 = nextInt(r, 50) + 50;
 
             String task;
             int result;
@@ -887,13 +819,9 @@ public abstract class LevelGenerator {
             if (r.nextBoolean()) {
                 result = i1 + i2;
                 task = i1 + "+" +i2;
-                if (r.nextBoolean()) {
-                    result = result + i3;
-                    task = task + "+" + i3;
-                } else {
-                    result = result - i3;
-                    task = task + "-" + i3;
-                }
+
+                result = result - i3;
+                task = task + "-" + i3;
             } else {
                 result = i1 - i2;
                 task = i1 + "-" +i2;
@@ -916,9 +844,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(100) + 100;
-            int i2 = r.nextInt(100) + 1;
-            int i3 = r.nextInt(100) + 1;
+            int i1 = nextInt(r, 50) + 100;
+            int i2 = nextInt(r, 50) + 50;
+            int i3 = nextInt(r, 50) + 50;
 
             String task;
             int result;
@@ -926,13 +854,9 @@ public abstract class LevelGenerator {
             if (r.nextBoolean()) {
                 result = i1 + i2;
                 task = i1 + "+" +i2;
-                if (r.nextBoolean()) {
-                    result = result + i3;
-                    task = task + "+" + i3;
-                } else {
-                    result = result - i3;
-                    task = task + "-" + i3;
-                }
+
+                result = result - i3;
+                task = task + "-" + i3;
             } else {
                 result = i1 - i2;
                 task = i1 + "-" +i2;
@@ -955,8 +879,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(5);
-            int i2 = r.nextInt(5);
+            int i1 = nextInt(r, 5);
+            int i2 = nextInt(r, 5);
 
             String task;
             int result;
@@ -973,8 +897,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(5) + 5;
-            int i2 = r.nextInt(5) + 5;
+            int i1 = nextInt(r, 5) + 5;
+            int i2 = nextInt(r, 5);
 
             String task;
             int result;
@@ -991,8 +915,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(10) + 11;
-            int i2 = r.nextInt(10) + 1;
+            int i1 = nextInt(r, 5) + 5;
+            int i2 = nextInt(r, 5) + 5;
 
             String task;
             int result;
@@ -1009,8 +933,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(10) + 21;
-            int i2 = r.nextInt(10) + 1;
+            int i1 = nextInt(r, 5) + 10;
+            int i2 = nextInt(r, 5) + 5;
 
             String task;
             int result;
@@ -1027,8 +951,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(30) + 11;
-            int i2 = r.nextInt(10) + 1;
+            int i1 = nextInt(r, 5) + 10;
+            int i2 = nextInt(r, 5) + 10;
 
             String task;
             int result;
@@ -1045,8 +969,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(30) + 11;
-            int i2 = r.nextInt(20) + 1;
+            int i1 = nextInt(r, 5) + 15;
+            int i2 = nextInt(r, 5) + 10;
 
             String task;
             int result;
@@ -1063,8 +987,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(40) + 11;
-            int i2 = r.nextInt(30) + 1;
+            int i1 = nextInt(r, 5) + 15;
+            int i2 = nextInt(r, 5) + 15;
 
             String task;
             int result;
@@ -1081,8 +1005,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(50) + 11;
-            int i2 = r.nextInt(50) + 1;
+            int i1 = nextInt(r, 10) + 20;
+            int i2 = nextInt(r, 10) + 10;
 
             String task;
             int result;
@@ -1099,8 +1023,8 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(60) + 11;
-            int i2 = r.nextInt(50) + 1;
+            int i1 = nextInt(r, 10) + 20;
+            int i2 = nextInt(r, 10) + 20;
 
             String task;
             int result;
@@ -1117,9 +1041,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(20) + 11;
-            int i2 = r.nextInt(9) + 1;
-            int i3 = r.nextInt(20) + 11;
+            int i1 = nextInt(r, 5) + 10;
+            int i2 = nextInt(r, 5) + 5;
+            int i3 = nextInt(r, 5) + 10;
 
             String task;
             int result;
@@ -1152,9 +1076,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(50) + 11;
-            int i2 = r.nextInt(9) + 1;
-            int i3 = r.nextInt(50) + 11;
+            int i1 = nextInt(r, 10) + 20;
+            int i2 = nextInt(r, 5) + 10;
+            int i3 = nextInt(r, 10) + 20;
 
             String task;
             int result;
@@ -1187,9 +1111,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(75) + 1;
-            int i2 = r.nextInt(9) + 1;
-            int i3 = r.nextInt(75) + 1;
+            int i1 = nextInt(r, 20) + 30;
+            int i2 = nextInt(r, 10) + 10;
+            int i3 = nextInt(r, 20) + 20;
 
             String task;
             int result;
@@ -1222,9 +1146,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(10) + 1;
-            int i2 = r.nextInt(10) + 1;
-            int i3 = r.nextInt(10) + 1;
+            int i1 = nextInt(r, 10) + 10;
+            int i2 = nextInt(r, 10);
+            int i3 = nextInt(r, 10);
 
             String task;
             int result;
@@ -1241,9 +1165,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(10) + 11;
-            int i2 = r.nextInt(10) + 11;
-            int i3 = r.nextInt(10) + 11;
+            int i1 = nextInt(r, 10) + 10;
+            int i2 = nextInt(r, 10) + 10;
+            int i3 = nextInt(r, 10) + 10;
 
             String task;
             int result;
@@ -1260,9 +1184,9 @@ public abstract class LevelGenerator {
         @Override
         public Task generateTask() {
             Random r = new Random();
-            int i1 = r.nextInt(20) + 11;
-            int i2 = r.nextInt(20) + 11;
-            int i3 = r.nextInt(20) + 11;
+            int i1 = nextInt(r, 10) + 20;
+            int i2 = nextInt(r, 10) + 10;
+            int i3 = nextInt(r, 10) + 20;
 
             String task;
             int result;
@@ -1272,5 +1196,9 @@ public abstract class LevelGenerator {
 
             return new Task(task, String.valueOf(result));
         }
+    }
+
+    static int nextInt(Random r, int maxRange) {
+        return r.nextInt(maxRange) + 1;
     }
 }

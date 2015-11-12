@@ -258,7 +258,9 @@ public class ScoreScene extends Scene implements IScene {
     public boolean onSceneTouchEvent(TouchEvent event) {
         if (event.isActionDown()) {
             againTextButton.setPressed(false);
-            nextTextButton.setPressed(false);
+            if (nextTextButton != null) {
+                nextTextButton.setPressed(false);
+            }
             exitTextButton.setPressed(false);
         } else if (event.isActionMove()) {
             if (!againTextButton.contains(event.getX(), event.getY())) {
@@ -267,7 +269,7 @@ public class ScoreScene extends Scene implements IScene {
                 }
             }
 
-            if (!nextTextButton.contains(event.getX(), event.getY())) {
+            if (nextTextButton != null && !nextTextButton.contains(event.getX(), event.getY())) {
                 if (nextTextButton.isPressed()) {
                     nextTextButton.setPressed(false);
                 }

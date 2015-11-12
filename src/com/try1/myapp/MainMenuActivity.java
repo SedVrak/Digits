@@ -1,5 +1,6 @@
 package com.try1.myapp;
 
+import android.graphics.Color;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -82,6 +83,22 @@ public class MainMenuActivity extends SimpleBaseGameActivity {
         mFont.load();
 
         GameData.setFont100(mFont);
+
+        // 100 green
+        fontTexture = new BitmapTextureAtlas(getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
+
+        mFont = FontFactory.createFromAsset(getFontManager(), fontTexture, getAssets(), "roboto_pm.ttf", 100, true, Color.GREEN);
+        mFont.load();
+
+        GameData.setFont100Green(mFont);
+
+        // 100 red
+        fontTexture = new BitmapTextureAtlas(getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
+
+        mFont = FontFactory.createFromAsset(getFontManager(), fontTexture, getAssets(), "roboto_pm.ttf", 100, true, Color.RED);
+        mFont.load();
+
+        GameData.setFont100Red(mFont);
 
         // 150
         fontTexture = new BitmapTextureAtlas(getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
