@@ -14,6 +14,7 @@ import com.try1.myapp.component.ShowBonusTimePanel;
 import com.try1.myapp.component.TextButton;
 import com.try1.myapp.component.TextButtonActionListener;
 
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.primitive.Rectangle;
@@ -57,8 +58,8 @@ public class GameScene extends Scene implements IScene {
     private Rectangle enterRect;
     private Text enterField;
 
-    protected TimerHandler timer;
-    private int timerValue;
+    protected IUpdateHandler timer;
+    private double timerValueD;
     protected Text timerText;
 
     protected int scoreValue;
@@ -188,9 +189,9 @@ public class GameScene extends Scene implements IScene {
         px += 360;
         buttons[11] = createButton(10, px, py);
 
-        for (int i = 0; i < buttons.length; i++) {
-            attachChild(buttons[i]);
-            registerTouchArea(buttons[i]);
+        for (TextButton button : buttons) {
+            attachChild(button);
+            registerTouchArea(button);
         }
 
         // timer
@@ -207,10 +208,10 @@ public class GameScene extends Scene implements IScene {
 
     protected void startGame() {
         if (gameType.equals(GameType.LEVELS)) {
-            setTimerValue(0);
+            setTimerValue(0d);
             setScoreValue(10);
         } else if (gameType.equals(GameType.TIME_ATTACK)) {
-            setTimerValue(60);
+            setTimerValue(60d);
             setScoreValue(0);
         } else {
             throw new IllegalStateException("gameType: " + gameType);
@@ -219,11 +220,14 @@ public class GameScene extends Scene implements IScene {
         ignoreKeyboard = true;
     }
 
-    private void setTimerValue(int value) {
-        int difference = value - timerValue;
+    public void setTimerValue(double value) {
+        timerValueD = value;
 
-        timerValue = value;
-        timerText.setText(String.valueOf(value));
+        timerText.setText(String.valueOf((int)value));
+    }
+
+    public GameType getGameType() {
+        return gameType;
     }
 
     private void setScoreValue(int value) {
@@ -246,61 +250,56 @@ public class GameScene extends Scene implements IScene {
     private void showBonus(int difference) {
         if (gameType == GameType.LEVELS) {
             if (difference > 0) {
-                bonusTimePanel.showBonus("+" + difference, ShowBonusTimePanel.RED, timerText.getWidth() + timerText.getX() + 10, timerText.getY());
+                bonusTimePanel.showBonus("+" + difference, ShowBonusTimePanel.RED, timerText.getWidth() + timerText.getX() + 20, timerText.getY());
             } else if (difference < 0) {
-                bonusTimePanel.showBonus(String.valueOf(difference), ShowBonusTimePanel.GREEN, timerText.getWidth() + timerText.getX() + 10, timerText.getY());
+                bonusTimePanel.showBonus(String.valueOf(difference), ShowBonusTimePanel.GREEN, timerText.getWidth() + timerText.getX() + 20, timerText.getY());
             }
         } else if (gameType == GameType.TIME_ATTACK) {
             if (difference > 0) {
-                bonusTimePanel.showBonus("+" + difference, ShowBonusTimePanel.GREEN, timerText.getWidth() + timerText.getX() + 10, timerText.getY());
+                bonusTimePanel.showBonus("+" + difference, ShowBonusTimePanel.GREEN, timerText.getWidth() + timerText.getX() + 20, timerText.getY());
             } else if (difference < 0) {
-                bonusTimePanel.showBonus(String.valueOf(difference), ShowBonusTimePanel.RED, timerText.getWidth() + timerText.getX() + 10, timerText.getY());
+                bonusTimePanel.showBonus(String.valueOf(difference), ShowBonusTimePanel.RED, timerText.getWidth() + timerText.getX() + 20, timerText.getY());
             }
         }
     }
 
     private void startTimer() {
-        timer = new TimerHandler(1f, true, new ITimerCallback() {
+        timer = new IUpdateHandler() {
             @Override
-            public void onTimePassed(TimerHandler pTimerHandler) {
-                if (!timer.isAutoReset()) {
-                    return;
-                }
-
-                if (gameType.equals(GameType.LEVELS)) {
-                    setTimerValue(timerValue + 1);
-                } else if (gameType.equals(GameType.TIME_ATTACK)) {
-                    if (timerValue <= 0) {
+            public void onUpdate(float pSecondsElapsed) {
+                if (gameType == GameType.LEVELS) {
+                    timerValueD += pSecondsElapsed;
+                    setTimerValue(timerValueD);
+                } else if (gameType == GameType.TIME_ATTACK) {
+                    timerValueD -= pSecondsElapsed;
+                    if (timerValueD <= 0) {
                         levelDone();
-                        return;
+
+                    } else {
+                        setTimerValue(timerValueD);
                     }
-
-                    setTimerValue(timerValue - 1);
                 } else {
-                    throw new IllegalStateException("gameType: " + gameType);
+                    throw new IllegalStateException("Illegal game type: " + getGameType());
                 }
-
             }
-        });
+
+            @Override
+            public void reset() {}
+        };
+        registerUpdateHandler(timer);
+
         ignoreKeyboard = false;
 
         pressToStartR.setVisible(false);
         pressToStartText.setVisible(false);
         generateNewTask();
-
-        mainMenuActivity.getEngine().registerUpdateHandler(timer);
     }
 
-    protected void levelDone() {
+    public void levelDone() {
         if (gameType.equals(GameType.LEVELS)) {
-            timer.setAutoReset(false);
+            unregisterUpdateHandler(timer);
 
-            int optimalTime = 30 + (levelIndex + 1);
-            if (timerValue <= optimalTime) {
-                // TODO
-            }
-
-            GameData.setScore(levelType, levelIndex, timerValue);
+            GameData.setScore(levelType, levelIndex, (int)timerValueD);
 
             GameData.clearExtra();
             GameData.putExtra(GameData.GAME_TYPE_STRING, gameType.toString());
@@ -309,7 +308,7 @@ public class GameScene extends Scene implements IScene {
 
             mainMenuActivity.setNewScene(new ScoreScene(mainMenuActivity));
         } else if (gameType.equals(GameType.TIME_ATTACK)) {
-            timer.setAutoReset(false);
+            unregisterUpdateHandler(timer);
             GameData.setScore(scoreValue);
 
             GameData.clearExtra();
@@ -501,15 +500,11 @@ public class GameScene extends Scene implements IScene {
     }
 
     private Text createTaskField() {
-        Text text = new Text(0, taskY + 20, GameData.getFont100(), "", CAMERA_WIDTH/50, new TextOptions(HorizontalAlign.LEFT), mainMenuActivity.getVertexBufferObjectManager());
-
-        return text;
+        return new Text(0, taskY + 20, GameData.getFont100(), "", CAMERA_WIDTH/50, new TextOptions(HorizontalAlign.LEFT), mainMenuActivity.getVertexBufferObjectManager());
     }
 
     private Text createEnterField() {
-        Text text = new Text(0, enterY + 20, GameData.getFont100(), "", MAX_ENTER, new TextOptions(HorizontalAlign.LEFT), mainMenuActivity.getVertexBufferObjectManager());
-
-        return text;
+        return new Text(0, enterY + 20, GameData.getFont100(), "", MAX_ENTER, new TextOptions(HorizontalAlign.LEFT), mainMenuActivity.getVertexBufferObjectManager());
     }
 
     private Rectangle createEnterFieldBackground() {
@@ -636,7 +631,7 @@ public class GameScene extends Scene implements IScene {
                 }
             } else if (gameType.equals(GameType.TIME_ATTACK)) {
                 setScoreValue(scoreValue + 1);
-                setTimerValue(timerValue + 2);
+                setTimerValue(timerValueD + 2);
                 showBonus(2);
             } else {
                 throw new IllegalStateException("gameType: " + gameType);
@@ -652,10 +647,10 @@ public class GameScene extends Scene implements IScene {
                         Vibrator v = (Vibrator) mainMenuActivity.getSystemService(Context.VIBRATOR_SERVICE);
                         v.vibrate(100);
                         if (gameType.equals(GameType.LEVELS)) {
-                            setTimerValue(timerValue + 1);
+                            setTimerValue(timerValueD + 1);
                             showBonus(1);
                         } else if (gameType.equals(GameType.TIME_ATTACK)) {
-                            setTimerValue(timerValue - 1);
+                            setTimerValue(timerValueD - 1);
                             showBonus(-1);
                         } else {
                             throw new IllegalStateException("gameType: " + gameType);
@@ -671,10 +666,10 @@ public class GameScene extends Scene implements IScene {
                     Vibrator v = (Vibrator) mainMenuActivity.getSystemService(Context.VIBRATOR_SERVICE);
                     v.vibrate(100);
                     if (gameType.equals(GameType.LEVELS)) {
-                        setTimerValue(timerValue + 1);
+                        setTimerValue(timerValueD + 1);
                         showBonus(1);
                     } else if (gameType.equals(GameType.TIME_ATTACK)) {
-                        setTimerValue(timerValue - 1);
+                        setTimerValue(timerValueD - 1);
                         showBonus(-1);
                     } else {
                         throw new IllegalStateException("gameType: " + gameType);
@@ -689,10 +684,10 @@ public class GameScene extends Scene implements IScene {
                     Vibrator v = (Vibrator) mainMenuActivity.getSystemService(Context.VIBRATOR_SERVICE);
                     v.vibrate(100);
                     if (gameType.equals(GameType.LEVELS)) {
-                        setTimerValue(timerValue + 1);
+                        setTimerValue(timerValueD + 1);
                         showBonus(1);
                     } else if (gameType.equals(GameType.TIME_ATTACK)) {
-                        setTimerValue(timerValue - 1);
+                        setTimerValue(timerValueD - 1);
                         showBonus(-1);
                     } else {
                         throw new IllegalStateException("gameType: " + gameType);
@@ -797,9 +792,8 @@ public class GameScene extends Scene implements IScene {
         pauseR.setVisible(false);
         registerMainControls();
 
-        timer.setAutoReset(true);
         generateNewTask();
-        timer.reset();
+        registerUpdateHandler(timer);
     }
 
     private void restart() {
@@ -825,7 +819,7 @@ public class GameScene extends Scene implements IScene {
     public void onPause() {
         unregisterMainControls();
         pauseR.setVisible(true);
-        timer.setAutoReset(false);
+        unregisterUpdateHandler(timer);
     }
 
     private void registerMainControls() {

@@ -123,7 +123,7 @@ public class TutorialScene extends GameScene {
 
     private void showTip0() {
         isTipShown = true;
-        timer.setAutoReset(false);
+        unregisterUpdateHandler(timer);
 
         shownTipSprite = arrowSprites[0];
         shownTipSprite.setPosition(GameData.getCameraWidth()/6, taskField.getY() + taskField.getHeight() - shownTipSprite.getHeight() / 3);
@@ -159,7 +159,7 @@ public class TutorialScene extends GameScene {
 
     private void showTip1() {
         isTipShown = true;
-        timer.setAutoReset(false);
+        unregisterUpdateHandler(timer);
 
         shownTipSprite = arrowSprites[1];
         shownTipSprite.setPosition(timerText.getWidth() + 20, 50);
@@ -195,7 +195,7 @@ public class TutorialScene extends GameScene {
 
     private void showTip2() {
         isTipShown = true;
-        timer.setAutoReset(false);
+        unregisterUpdateHandler(timer);
 
         shownTipSprite = arrowSprites[2];
         shownTipSprite.setPosition(scoreText.getX() - shownTipSprite.getWidth(), -50);
@@ -231,15 +231,15 @@ public class TutorialScene extends GameScene {
 
     private void showTip3() {
         isTipShown = true;
-        timer.setAutoReset(false);
+        unregisterUpdateHandler(timer);
 
-        shownTipSprite = arrowSprites[3];
-        shownTipSprite.setPosition(buttons[buttons.length - 1].getX() - shownTipSprite.getWidth() / 5, buttons[buttons.length - 1].getY() - shownTipSprite.getHeight());
+        shownTipSprite = arrowSprites[2];
+        shownTipSprite.setPosition(buttons[buttons.length - 1].getX() - shownTipSprite.getWidth() / 5, buttons[buttons.length - 1].getY() - shownTipSprite.getHeight() / 2);
 
         shownTipRect = new Rectangle(
                 10,
-                50,
-                shownTipSprite.getX() + 20,
+                shownTipSprite.getY() - 100,
+                shownTipSprite.getX() + 50,
                 300,
                 mainMenuActivity.getVertexBufferObjectManager()
         );
@@ -267,7 +267,7 @@ public class TutorialScene extends GameScene {
 
     private void showTip4() {
         isTipShown = true;
-        timer.setAutoReset(false);
+        unregisterUpdateHandler(timer);
 
         shownTipSprite = arrowSprites[3];
         shownTipSprite.setPosition((GameData.getCameraWidth() - shownTipSprite.getWidth()) / 2, buttons[0].getY() - shownTipSprite.getHeight());
@@ -302,7 +302,7 @@ public class TutorialScene extends GameScene {
     }
 
     @Override
-    protected void levelDone() {
+    public void levelDone() {
         if (scoreValue > 0) {
             SharedPreferences mScoreDb = mainMenuActivity.getSharedPreferences(GameData.HIGHSCORE_DB_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = mScoreDb.edit();
